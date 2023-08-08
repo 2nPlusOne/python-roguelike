@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from components.base_component import BaseComponent
 from render_order import RenderOrder
+from input_handlers import GameOverEventHandler
 
 if TYPE_CHECKING:
     from entity import Actor
@@ -31,6 +32,7 @@ class Fighter(BaseComponent):
     def die(self) -> None:
         if self.engine.player is self.entity:
             death_message = "You died!"
+            self.engine.event_handler = GameOverEventHandler(self.engine)
         else:
             death_message = f"{self.entity.name} is dead!"
 

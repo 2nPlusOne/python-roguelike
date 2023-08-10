@@ -102,6 +102,9 @@ class MainGameEventHandler(EventHandler):
         elif key in WAIT_KEYS:
             action = WaitAction(player)
 
+        elif key == tcod.event.K_ESCAPE:
+            action = EscapeAction(player)
+
         return action
 
 

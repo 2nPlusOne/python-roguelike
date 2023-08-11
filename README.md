@@ -1,4 +1,4 @@
-# My Roguelike Game Project
+# Python Roguelike Game
 
 This project is a roguelike game developed in Python using the tcod library for making roguelike games. This project is based on the [Python roguelike tutorial](http://www.rogueliketutorials.com/tutorials/tcod/v2/) by TStand90.
 

@@ -34,7 +34,7 @@ Follow these steps to get the project running on your computer:
 
 ## Gameplay
 
-Wander the procedurally generated dungeon and kill all the enemies present on the map. The game is turn-based, so time only moves when you do. You can move in all four cardinal directions, and diagonally. Attacks are performed by attempting to move onto the same tile as an enemy. Keep in mind that you and all enemies can attack diagonally as well. Try to clear the dungeon before running out of health to 'win'. The win condition will change more work is done on the project.
+Wander the procedurally generated dungeon and kill all the enemies present on the map. The game is turn-based, so time only moves when you do. You can move in all four cardinal directions and diagonally. Attacks are performed by attempting to move onto the same tile as an enemy. Keep in mind that you and all enemies can attack diagonally as well. Try to clear the dungeon before running out of health to 'win'. The win condition will change as more work is done on the project.
 
 ## Controls
 

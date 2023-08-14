@@ -19,9 +19,6 @@ class Direction(Enum):
     DOWN_LEFT = (-1, 1)
     DOWN_RIGHT = (1, 1)
 
-    def as_tuple(self):
-        return self.value
-
 
 MOVE_KEYS = {
     # Arrow keys.
@@ -97,7 +94,7 @@ class MainGameEventHandler(EventHandler):
         player = self.engine.player
 
         if key in MOVE_KEYS:
-            dx, dy = MOVE_KEYS[key].as_tuple()
+            dx, dy = MOVE_KEYS[key].value
             action = BumpAction(player, dx, dy)
         elif key in WAIT_KEYS:
             action = WaitAction(player)

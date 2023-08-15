@@ -7,6 +7,7 @@ from actions import Action, BumpAction, EscapeAction, WaitAction
 
 if TYPE_CHECKING:
     from engine import Engine
+    from tcod.context import Context
 
 
 class Direction(Enum):
@@ -61,8 +62,18 @@ class EventHandler(tcod.event.EventDispatch[Action]):
     def __init__(self, engine: Engine):
         self.engine = engine
 
-    def handle_events(self) -> None:
-        raise NotImplementedError()
+    def handle_events(self, context: Context) -> None:
+        for event in tcod.event.wait():
+            context.convert_event(event)
+            self.dispatch(event)
+
+    def on_render(self, console: tcod.Console) -> None:
+        self.engine.render(console)
+
+    # Implement event handling for mouse motion events
+    def ev_mousemotion(self, event: tcod.event.MouseMotion) -> None:
+        if self.engine.game_map.in_bounds(event.tile.x, event.tile.y):
+            self.engine.mouse_location = event.tile.x, event.tile.y
 
     # Override the inherited method to implement event handling for the quit event
     def ev_quit(self, event: tcod.event.Quit) -> Optional[Action]:
@@ -73,8 +84,9 @@ class MainGameEventHandler(EventHandler):
     def __init__(self, engine: Engine):
         self.engine = engine
 
-    def handle_events(self) -> None:
+    def handle_events(self, context: tcod.context.Context) -> None:
         for event in tcod.event.wait():
+            context.convert_event(event)
             action = self.dispatch(event)
 
             if action is None:
@@ -99,15 +111,16 @@ class MainGameEventHandler(EventHandler):
         elif key in WAIT_KEYS:
             action = WaitAction(player)
 
-        elif key == tcod.event.K_ESCAPE:
+        elif key == tcod.event.KeySym.ESCAPE:
             action = EscapeAction(player)
 
         return action
 
 
 class GameOverEventHandler(EventHandler):
-    def handle_events(self) -> None:
+    def handle_events(self, context: tcod.context.Context) -> None:
         for event in tcod.event.wait():
+            context.convert_event(event)
             action = self.dispatch(event)
 
             if action is None:
@@ -120,7 +133,7 @@ class GameOverEventHandler(EventHandler):
 
         key = event.sym
 
-        if key == tcod.event.K_ESCAPE:
+        if key == tcod.event.KeySym.ESCAPE:
             action = EscapeAction(self.engine.player)
 
         # No valid key was pressed

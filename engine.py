@@ -2,12 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from tcod.context import Context
 from tcod.console import Console
 from tcod.map import compute_fov
 
 from input_handlers import MainGameEventHandler
-from render_functions import render_bar
+from render_functions import render_bar, render_names_at_mouse_location
 from message_log import MessageLog
 
 if TYPE_CHECKING:
@@ -23,6 +22,7 @@ class Engine:
         self.game_map: Optional[GameMap] = None
         self.message_log = MessageLog()
         self.fov_radius = 10
+        self.mouse_location = (0, 0)
 
     def handle_enemy_turns(self) -> None:
         for entity in set(self.game_map.actors) - {self.player}:
@@ -39,7 +39,7 @@ class Engine:
         # If a tile is "visible" it should be added to "explored"
         self.game_map.explored |= self.game_map.visible
 
-    def render(self, console: Console, context: Context) -> None:
+    def render(self, console: Console) -> None:
         self.game_map.render(console)
 
         self.message_log.render(console=console, x=21, y=45, width=40, height=5)
@@ -51,5 +51,4 @@ class Engine:
             total_width=20,
         )
 
-        context.present(console)
-        console.clear()
+        render_names_at_mouse_location(console=console, x=21, y=44, engine=self)
